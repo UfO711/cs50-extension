@@ -22,6 +22,9 @@ const unsigned int N = 26;
 // Hash table
 node *table[N];
 
+// Word counter
+int i = 0;
+
 // Returns true if word is in dictionary, else false
 bool check(const char *word)
 {
@@ -77,6 +80,7 @@ bool load(const char *dictionary)
 unsigned int size(void)
 {
     // TODO
+
     return 0;
 }
 
