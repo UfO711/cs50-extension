@@ -1,7 +1,10 @@
 // Implements a dictionary's functionality
 
+#include <stdio.h>
 #include <ctype.h>
 #include <stdbool.h>
+#include <strings.h>
+#include <stdlib.h>
 
 #include "dictionary.h"
 
@@ -37,6 +40,26 @@ unsigned int hash(const char *word)
 bool load(const char *dictionary)
 {
     // TODO
+    // Open dictionary file
+    FILE *fp = fopen(dictionary, "r");
+    if (fp == NULL)
+    {
+        return false;
+    }
+    
+    char *buffer = NULL;
+    
+    // Read words from dictionary
+    while (fscanf(fp, "%s", buffer) != EOF)
+    {
+        node *n = malloc(sizeof(node));
+        if (n == NULL)
+        {
+            return false;
+        }
+        // Copy those words into nodes
+        strcpy(n->word, buffer);
+    }
     return false;
 }
 
