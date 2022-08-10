@@ -57,9 +57,19 @@ bool load(const char *dictionary)
         {
             return false;
         }
-        // Copy those words into nodes
+        // Copy words into nodes
         strcpy(n->word, buffer);
+
+        // Load word into hash table
+        // Get hash code
+        unsigned int hash_number;
+        hash_number = hash(n->word);
+
+        // Insert a new node
+        n->next = table[hash_number]->next;
+        table[hash_number]->next = n;
     }
+
     return false;
 }
 
