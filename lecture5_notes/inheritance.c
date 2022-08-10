@@ -91,7 +91,7 @@ void free_family(person *p)
     free_family(p->parents[1]);
 
     // TODO: Free child
-    free_family(p);
+    free(p);
 
 }
 
