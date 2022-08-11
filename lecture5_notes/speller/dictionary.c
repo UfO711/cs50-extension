@@ -4,6 +4,7 @@
 #include <ctype.h>
 #include <stdbool.h>
 #include <strings.h>
+#include <string.h>
 #include <stdlib.h>
 
 #include "dictionary.h"
@@ -21,6 +22,9 @@ const unsigned int N = 26;
 
 // Hash table
 node *table[N];
+
+// Initiallize word counter
+unsigned int word_counter = 0;
 
 // Returns true if word is in dictionary, else false
 bool check(const char *word)
@@ -61,7 +65,7 @@ bool load(const char *dictionary)
         return false;
     }
     
-    char *buffer = NULL;
+    char buffer[LENGTH + 1];
     
     // Read words from dictionary
     while (fscanf(fp, "%s", buffer) != EOF)
@@ -80,10 +84,20 @@ bool load(const char *dictionary)
         hash_number = hash(n->word);
 
         // Insert a new node
-        n->next = table[hash_number]->next;
-        table[hash_number]->next = n;
+        if (table[hash_number] == NULL)
+        {
+            table[hash_number] = n;
+            n->next = NULL;
+            word_counter++;
+        }
+        else
+        {
+            n->next = table[hash_number];
+            table[hash_number] = n;
+            word_counter++;
+        }
     }
-
+    fclose(fp);
     return false;
 }
 
@@ -91,17 +105,6 @@ bool load(const char *dictionary)
 unsigned int size(void)
 {
     // TODO
-    int word_counter = 0;
-    node *trav = NULL;
-    for (int i = 0; i < N; i++)
-    {
-        trav = table[i];
-        while (trav->next != NULL)
-        {
-            word_counter++;
-            trav = table[i]->next->next;
-        }
-    }
     return word_counter;
 }
 
@@ -113,12 +116,16 @@ bool unload(void)
     node *temp = NULL;  
     for (int i = 0; i < N; i++)
     {
-        do
+        if (table[i] != NULL)
         {
-            temp = table[i]->next;  
-            trav = temp->next;
-            free(temp);
-        } while (trav != NULL);
+            trav = table[i];  
+            do
+            {
+                temp = trav;
+                trav = trav->next;
+                free(temp);
+            } while (trav != NULL);
+        }
     }
     // How do I know if it is successful
     return true;
