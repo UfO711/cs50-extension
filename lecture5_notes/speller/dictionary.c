@@ -26,6 +26,20 @@ node *table[N];
 bool check(const char *word)
 {
     // TODO
+    unsigned int hash_number;
+    // Get hash value of the word
+    hash_number = hash(word);
+    node *trav = NULL;
+    trav = table[hash_number]->next;
+    while (trav != NULL)
+    {
+        if (strcasecmp(trav->word, word) == 0)
+        {
+            return true;
+        }
+        trav = trav->next;
+    }
+    
     return false;
 }
 
@@ -78,7 +92,7 @@ unsigned int size(void)
 {
     // TODO
     int word_counter = 0;
-    node *trav = malloc(sizeof(node));
+    node *trav = NULL;
     for (int i = 0; i < N; i++)
     {
         trav = table[i];
