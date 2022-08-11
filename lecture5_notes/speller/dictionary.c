@@ -22,9 +22,6 @@ const unsigned int N = 26;
 // Hash table
 node *table[N];
 
-// Word counter
-int i = 0;
-
 // Returns true if word is in dictionary, else false
 bool check(const char *word)
 {
@@ -80,8 +77,18 @@ bool load(const char *dictionary)
 unsigned int size(void)
 {
     // TODO
-
-    return 0;
+    int word_counter = 0;
+    node *trav = malloc(sizeof(node));
+    for (int i = 0; i < N; i++)
+    {
+        trav = table[i];
+        while (trav->next != NULL)
+        {
+            word_counter++;
+            trav = table[i]->next->next;
+        }
+    }
+    return word_counter;
 }
 
 // Unloads dictionary from memory, returning true if successful, else false
