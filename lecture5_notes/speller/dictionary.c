@@ -109,5 +109,17 @@ unsigned int size(void)
 bool unload(void)
 {
     // TODO
-    return false;
+    node *trav = NULL;  
+    node *temp = NULL;  
+    for (int i = 0; i < N; i++)
+    {
+        do
+        {
+            temp = table[i]->next;  
+            trav = temp->next;
+            free(temp);
+        } while (trav != NULL);
+    }
+    // How do I know if it is successful
+    return true;
 }
