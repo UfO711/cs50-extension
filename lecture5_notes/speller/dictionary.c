@@ -21,7 +21,7 @@ node;
 const unsigned int N = 26;
 
 // Hash table
-node *table[N];
+node *table[N * N];
 
 // Initiallize word counter
 unsigned int word_counter = 0;
@@ -54,7 +54,22 @@ bool check(const char *word)
 unsigned int hash(const char *word)
 {
     // TODO: Improve this hash function
-    return toupper(word[0]) - 'A';
+    // The hash table is designed to consider first 2 letters from word
+    // Example: [0]~[25]:AA~AZ  [26]~[51]:BA~BZ
+    // The first letter's index in alphet
+    unsigned int first = toupper(word[0]) - 'A';
+    // The second letter's index in alphet
+    unsigned int second = toupper(word[1]) - 'A';
+
+    if (strlen(word) == 1)
+    {
+        return 26 * first;
+    }
+    else
+    {
+        return 26 * first + second;
+    }
+    
 }
 
 // Loads dictionary into memory, returning true if successful, else false
@@ -79,6 +94,7 @@ bool load(const char *dictionary)
         // Check NULL
         if (n == NULL)
         {
+            fclose(fp);
             return false;
         }
         // Copy words into nodes
@@ -126,7 +142,7 @@ bool unload(void)
     // TODO
     node *trav = NULL;  
     node *temp = NULL;  
-    for (int i = 0; i < N; i++)
+    for (int i = 0; i < N * N; i++)
     {   
         // If hash table index i has values in it
         if (table[i] != NULL)
